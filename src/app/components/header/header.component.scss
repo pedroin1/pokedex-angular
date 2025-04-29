@@ -1,0 +1,10 @@
+@use "variables" as var;
+@use "mix" as mix;
+
+.header {
+  padding: var.$spacing-sm;
+
+  &__logo {
+    @include mix.flex-row(flex-start, center, var.$spacing-stack-xs);
+  }
+}
