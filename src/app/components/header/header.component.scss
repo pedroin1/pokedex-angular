@@ -1,10 +1,26 @@
 @use "variables" as var;
 @use "mix" as mix;
+@use "colors";
 
 .header {
   padding: var.$spacing-sm;
+  height: 80px;
+  background-color: var(--blue-01);
+  width: 100%;
+  @include mix.flex-row(flex-start, center, var.$spacing-stack-xs);
 
   &__logo {
-    @include mix.flex-row(flex-start, center, var.$spacing-stack-xs);
+    background-color: var(--blue-02);
+    padding: var.$spacing-sm;
+    border: 4px solid var(--blue-03);
+    border-radius: 50px;
+    cursor: pointer;
+    user-select: none;
+
+    @include mix.flex-row(flex-start, center, var.$spacing-stack-lg);
+
+    &-text {
+      color: var(--white);
+    }
   }
 }

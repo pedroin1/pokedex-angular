@@ -1,9 +1,4 @@
 <app-header></app-header>
 <ul>
-  @for (pokemon of pokemonService.pokemonsList$ | async; track $index) {
-  <li>
-    <span>{{ pokemon.name }}</span>
-    <img [src]="pokemon.url" [alt]="pokemon.name" />
-  </li>
-  }
+  test
 </ul>
