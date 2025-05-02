@@ -3,17 +3,18 @@
 @use "colors";
 
 .header {
-  padding: 0 var.$spacing-sm;
+  min-width: inherit;
   height: 80px;
+  padding: 0 var.$spacing-sm;
   background-color: var(--blue-01);
-  width: 100%;
+
   @include mix.flex-row(space-between, center, var.$spacing-stack-xs);
 
   &__logo {
     width: 300px;
     height: 50px;
-    background-color: var(--blue-02);
     padding: var.$spacing-xs;
+    background-color: var(--blue-02);
     border: 3px solid var(--blue-03);
     border-radius: 50px;
     user-select: none;

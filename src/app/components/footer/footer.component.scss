@@ -2,6 +2,7 @@
 @use "mix" as mix;
 
 .footer {
+  min-width: inherit;
   height: 30px;
   background-color: var(--blue-01);
 

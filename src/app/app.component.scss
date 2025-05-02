@@ -1,8 +1,22 @@
+@use "mix" as mix;
+
 .main-container {
   width: 100vw;
+  min-width: 300px;
 
   //deixar a main com o tamanho responsivo com calc
   // -110 -> 80px de altura do header + 30px de altura do footer
   // com isso a altura da pagina fica certinha sem scroll
   height: calc(100vh - 110px);
+
+  display: flex;
+
+  .item1 {
+    background-color: red;
+    flex-grow: 1.2;
+  }
+  .item2 {
+    background-color: yellow;
+    flex-grow: 1;
+  }
 }
