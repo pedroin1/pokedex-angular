@@ -1,0 +1,8 @@
+.main-container {
+  width: 100vw;
+
+  //deixar a main com o tamanho responsivo com calc
+  // -110 -> 80px de altura do header + 30px de altura do footer
+  // com isso a altura da pagina fica certinha sem scroll
+  height: calc(100vh - 110px);
+}

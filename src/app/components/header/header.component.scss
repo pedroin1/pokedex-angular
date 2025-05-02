@@ -3,24 +3,27 @@
 @use "colors";
 
 .header {
-  padding: var.$spacing-sm;
+  padding: 0 var.$spacing-sm;
   height: 80px;
   background-color: var(--blue-01);
   width: 100%;
-  @include mix.flex-row(flex-start, center, var.$spacing-stack-xs);
+  @include mix.flex-row(space-between, center, var.$spacing-stack-xs);
 
   &__logo {
+    width: 300px;
+    height: 50px;
     background-color: var(--blue-02);
-    padding: var.$spacing-sm;
-    border: 4px solid var(--blue-03);
+    padding: var.$spacing-xs;
+    border: 3px solid var(--blue-03);
     border-radius: 50px;
-    cursor: pointer;
     user-select: none;
+    cursor: pointer;
 
-    @include mix.flex-row(flex-start, center, var.$spacing-stack-lg);
+    @include mix.flex-row(space-between, center, var.$spacing-stack-xl);
+  }
 
-    &-text {
-      color: var(--white);
-    }
+  &__title {
+    color: var(--white);
+    -webkit-text-stroke: 1px var(--blue-03);
   }
 }
