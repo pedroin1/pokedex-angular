@@ -1,0 +1,22 @@
+@use "variables" as var;
+@use "mix" as mix;
+@use "colors";
+
+.photo-card {
+  &__container {
+    width: 500px;
+    height: 400px;
+    border: var.$border-lg solid var(--yellow-02);
+    outline: var.$border-xl solid var(--blue-04);
+    border-radius: var.$border-half-pill;
+    background: linear-gradient(var(--white-02) 50%, var(--blue-05) 50%);
+    background-size: 20px 20px;
+
+    @include mix.flex-center;
+  }
+
+  &__image {
+    width: 100px;
+    height: 100px;
+  }
+}

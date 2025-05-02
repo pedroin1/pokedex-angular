@@ -1,0 +1,12 @@
+<div
+  class="pokemon-card__container"
+  [ngClass]="{ selected: selected() }"
+  (click)="onToogleSelect()"
+>
+  <img class="pokemon-card__arrow" src="assets/img/flecha.png" alt="" />
+  <div class="pokemon-card__info">
+    <div class="pokemon-card__circle"></div>
+    <span>No. 001 - </span>
+    <span>{{ pokemon().name }}</span>
+  </div>
+</div>

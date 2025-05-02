@@ -32,7 +32,7 @@ export class PokemonService {
 
   private getAllPokemons(): void {
     this.httpClient
-      .get<RequestPokemon>(`${this.apiUrl}/pokemon?limit=100000&offset=0`)
+      .get<RequestPokemon>(`${this.apiUrl}/pokemon?limit=15&offset=0`)
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         catchError((error: unknown) => {

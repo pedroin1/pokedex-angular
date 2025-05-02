@@ -1,0 +1,5 @@
+<ul class="pokemon-list__container">
+  @for (pokemon of pokemonService.pokemonsList$ | async; track $index) {
+  <app-pokemon-card [pokemon]="pokemon"></app-pokemon-card>
+  }
+</ul>

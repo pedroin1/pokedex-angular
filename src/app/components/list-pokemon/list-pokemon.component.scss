@@ -1,0 +1,14 @@
+@use "variables" as var;
+@use "mix" as mix;
+
+:host {
+  overflow-y: auto;
+  max-height: 90%;
+  width: 100%;
+}
+
+.pokemon-list {
+  &__container {
+    @include mix.flex-column(flex-start, center, var.$spacing-inline-sm);
+  }
+}

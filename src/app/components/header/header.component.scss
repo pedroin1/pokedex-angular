@@ -15,7 +15,7 @@
     height: 50px;
     padding: var.$spacing-xs;
     background-color: var(--blue-02);
-    border: 3px solid var(--blue-03);
+    border: var.$border-md solid var(--blue-03);
     border-radius: 50px;
     user-select: none;
     cursor: pointer;
@@ -25,6 +25,6 @@
 
   &__title {
     color: var(--white);
-    -webkit-text-stroke: 1px var(--blue-03);
+    -webkit-text-stroke: var.$border-xs var(--blue-03);
   }
 }
