@@ -1,0 +1,9 @@
+@use "colors";
+@use "mix" as mix;
+
+.footer {
+  height: 30px;
+  background-color: var(--blue-01);
+
+  @include mix.flex-center;
+}
