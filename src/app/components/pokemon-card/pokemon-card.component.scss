@@ -4,13 +4,20 @@
 
 .pokemon-card {
   &__container {
+    padding: var.$spacing-xs;
     @include mix.flex-row(flex-start, center, var.$spacing-inline-xs);
+    cursor: pointer;
+
+    &-selected {
+      border-radius: var.$border-lg;
+      margin-left: var.$spacing-inline-xs;
+      background-color: var(--red-01) !important;
+    }
   }
 
   &__arrow {
     width: 20px;
     height: 20px;
-    cursor: pointer;
   }
 
   &__info {
@@ -18,7 +25,7 @@
     padding: var.$spacing-xs;
     background-color: var(--yellow-03);
     border-radius: var.$border-half-pill;
-    display: flex;
+    @include mix.flex-row(flex-start, center, var.$spacing-inline-xs);
   }
 
   &__circle {
@@ -27,10 +34,5 @@
     width: 25px;
     border-radius: var.$border-circle;
     background-color: rgba(0, 0, 0, 0.125);
-    cursor: pointer;
   }
-}
-
-.selected {
-  background-color: red;
 }

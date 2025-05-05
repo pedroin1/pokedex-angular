@@ -1,7 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { DestroyRef, Injectable } from '@angular/core';
 import { environment } from '@environments/environment.development';
-import { BehaviorSubject, catchError, map, throwError } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  map,
+  Subject,
+  throwError,
+  switchMap,
+} from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { IPokemon } from '@models/pokemon';
 import { RequestPokemon } from '@models/request-pokemon';
@@ -11,6 +18,12 @@ import { RequestPokemon } from '@models/request-pokemon';
 })
 export class PokemonService {
   private readonly apiUrl = environment.API_URL;
+
+  private _pokemonId$ = new Subject<string | number>();
+
+  private _pokemon$ = new BehaviorSubject<IPokemon | null>(null);
+
+  public pokemon$ = this._pokemon$.asObservable();
 
   private _selectedPokemon$ = new BehaviorSubject<IPokemon | null>(null);
 
@@ -22,6 +35,7 @@ export class PokemonService {
 
   constructor(private httpClient: HttpClient, private destroyRef: DestroyRef) {
     this.getAllPokemons();
+    this.getPokemonById();
   }
 
   private getAllPokemons(): void {
@@ -30,7 +44,7 @@ export class PokemonService {
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         catchError((error: unknown) => {
-          console.log(error);
+          console.log('Erro ao buscar lista de Pokémons:', error);
           return throwError(() => error);
         }),
         map((request: RequestPokemon) => request.results)
@@ -40,7 +54,36 @@ export class PokemonService {
       });
   }
 
+  private getPokemonById(): void {
+    this._pokemonId$
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        switchMap((pokemonId) =>
+          this.httpClient
+            .get<IPokemon>(`${this.apiUrl}/pokemo/${pokemonId}`)
+            .pipe(
+              catchError((error) => {
+                console.log('Erro ao buscar Pokémon:', error);
+                return throwError(() => error);
+              })
+            )
+        )
+      )
+      .subscribe((pokemon) => {
+        this._pokemon$.next(pokemon);
+      });
+  }
+
+  public loadPokemonById(id: string | number): void {
+    this._pokemonId$.next(id);
+  }
+
   public selectPokemon(pokemon: IPokemon): void {
-    this._selectedPokemon$.next(pokemon);
+    if (this._selectedPokemon$.getValue()?.name === pokemon.name) {
+      this._selectedPokemon$.next(null);
+      return;
+    } else {
+      this._selectedPokemon$.next(pokemon);
+    }
   }
 }

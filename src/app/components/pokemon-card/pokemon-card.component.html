@@ -1,12 +1,13 @@
 <div
   class="pokemon-card__container"
-  [ngClass]="{ selected: isSelected() }"
+  [ngClass]="{ 'pokemon-card__container-selected': isSelected() }"
   (click)="onSelectPokemon(pokemon())"
 >
   <img class="pokemon-card__arrow" src="assets/img/flecha.png" alt="" />
   <div class="pokemon-card__info">
     <div class="pokemon-card__circle"></div>
-    <span>No. 001 - </span>
-    <span>{{ pokemon().name }}</span>
+    <span>No. {{ pokemonNumber() | pokemonCode }}</span>
+    <img [src]="pokemonImage()" width="50" height="40" alt="" />
+    <span> {{ pokemon().name | titlecase }}</span>
   </div>
 </div>
