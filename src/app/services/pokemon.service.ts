@@ -3,24 +3,18 @@ import { DestroyRef, Injectable } from '@angular/core';
 import { environment } from '@environments/environment.development';
 import { BehaviorSubject, catchError, map, throwError } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
-export interface RequestPokemon {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: IPokemon[];
-}
-
-export interface IPokemon {
-  name: string;
-  url: string;
-}
+import { IPokemon } from '@models/pokemon';
+import { RequestPokemon } from '@models/request-pokemon';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PokemonService {
   private readonly apiUrl = environment.API_URL;
+
+  private _selectedPokemon$ = new BehaviorSubject<IPokemon | null>(null);
+
+  public selectedPokemon$ = this._selectedPokemon$.asObservable();
 
   private _pokemonsList$ = new BehaviorSubject<IPokemon[]>([]);
 
@@ -44,5 +38,9 @@ export class PokemonService {
       .subscribe((result) => {
         this._pokemonsList$.next(result);
       });
+  }
+
+  public selectPokemon(pokemon: IPokemon): void {
+    this._selectedPokemon$.next(pokemon);
   }
 }

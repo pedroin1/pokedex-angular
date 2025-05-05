@@ -1,7 +1,7 @@
 <div
   class="pokemon-card__container"
-  [ngClass]="{ selected: selected() }"
-  (click)="onToogleSelect()"
+  [ngClass]="{ selected: isSelected() }"
+  (click)="onSelectPokemon(pokemon())"
 >
   <img class="pokemon-card__arrow" src="assets/img/flecha.png" alt="" />
   <div class="pokemon-card__info">
