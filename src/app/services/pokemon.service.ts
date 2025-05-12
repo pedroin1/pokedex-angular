@@ -12,11 +12,19 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { IPokemon } from '@models/pokemon';
 import { RequestPokemon } from '@models/request-pokemon';
+import {
+  SCROLL_ADDITIONAL_OFFSET,
+  SCROLL_INITIAL_OFFSET,
+  SCROLL_LIMIT,
+} from '@constants/pokemon-scroll';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PokemonService {
+  //init as 0
+  private offset = SCROLL_INITIAL_OFFSET;
+
   private readonly apiUrl = environment.API_URL;
 
   private _pokemonId$ = new Subject<string | number>();
@@ -40,7 +48,9 @@ export class PokemonService {
 
   private getAllPokemons(): void {
     this.httpClient
-      .get<RequestPokemon>(`${this.apiUrl}/pokemon?limit=15&offset=0`)
+      .get<RequestPokemon>(
+        `${this.apiUrl}/pokemon?limit=${SCROLL_LIMIT}&offset=${SCROLL_INITIAL_OFFSET}`
+      )
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         catchError((error: unknown) => {
@@ -60,7 +70,7 @@ export class PokemonService {
         takeUntilDestroyed(this.destroyRef),
         switchMap((pokemonId) =>
           this.httpClient
-            .get<IPokemon>(`${this.apiUrl}/pokemo/${pokemonId}`)
+            .get<IPokemon>(`${this.apiUrl}/pokemon/${pokemonId}`)
             .pipe(
               catchError((error) => {
                 console.log('Erro ao buscar Pokémon:', error);
@@ -76,6 +86,30 @@ export class PokemonService {
 
   public loadPokemonById(id: string | number): void {
     this._pokemonId$.next(id);
+  }
+
+  public loadMorePokemons(): void {
+    //updating offset
+    this.offset += SCROLL_ADDITIONAL_OFFSET;
+
+    this.httpClient
+      .get<RequestPokemon>(
+        `${this.apiUrl}/pokemon?limit=${SCROLL_LIMIT}&offset=${this.offset}`
+      )
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        catchError((error: unknown) => {
+          console.log('Erro ao atualizar lista de Pokémons:', error);
+          return throwError(() => error);
+        }),
+        map((request: RequestPokemon) => request.results)
+      )
+      .subscribe((result) => {
+        this._pokemonsList$.next([
+          ...this._pokemonsList$.getValue(),
+          ...result,
+        ]);
+      });
   }
 
   public selectPokemon(pokemon: IPokemon): void {

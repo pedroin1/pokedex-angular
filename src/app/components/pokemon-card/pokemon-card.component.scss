@@ -4,9 +4,9 @@
 
 .pokemon-card {
   &__container {
+    cursor: pointer;
     padding: var.$spacing-xs;
     @include mix.flex-row(flex-start, center, var.$spacing-inline-xs);
-    cursor: pointer;
 
     &-selected {
       border-radius: var.$border-lg;
@@ -22,7 +22,7 @@
 
   &__info {
     width: 400px;
-    padding: var.$spacing-xs;
+    padding: 0 var.$spacing-xs;
     background-color: var(--yellow-03);
     border-radius: var.$border-half-pill;
     @include mix.flex-row(flex-start, center, var.$spacing-inline-xs);

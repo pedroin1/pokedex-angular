@@ -1,4 +1,12 @@
-<ul class="pokemon-list__container">
+<ul
+  class="pokemon-list__container"
+  infiniteScroll
+  [infiniteScrollDistance]="1"
+  [infiniteScrollThrottle]="50"
+  [scrollWindow]="false"
+  [horizontal]="false"
+  (scrolled)="onScroll()"
+>
   @for (pokemon of pokemonService.pokemonsList$ | async; track $index) {
   <app-pokemon-card
     [pokemon]="pokemon"
