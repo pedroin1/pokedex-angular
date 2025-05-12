@@ -39,6 +39,11 @@ export class PokemonService {
 
   private _pokemonsList$ = new BehaviorSubject<IPokemon[]>([]);
 
+  private _isLoadingPokemonList$ = new Subject<boolean>();
+
+  public readonly isLoadingPokemonList$ =
+    this._isLoadingPokemonList$.asObservable();
+
   public readonly pokemonsList$ = this._pokemonsList$.asObservable();
 
   constructor(private httpClient: HttpClient, private destroyRef: DestroyRef) {
@@ -47,6 +52,7 @@ export class PokemonService {
   }
 
   private getAllPokemons(): void {
+    this._isLoadingPokemonList$.next(true);
     this.httpClient
       .get<RequestPokemon>(
         `${this.apiUrl}/pokemon?limit=${SCROLL_LIMIT}&offset=${SCROLL_INITIAL_OFFSET}`
@@ -55,12 +61,14 @@ export class PokemonService {
         takeUntilDestroyed(this.destroyRef),
         catchError((error: unknown) => {
           console.log('Erro ao buscar lista de Pokémons:', error);
+          this._isLoadingPokemonList$.next(false);
           return throwError(() => error);
         }),
         map((request: RequestPokemon) => request.results)
       )
       .subscribe((result) => {
         this._pokemonsList$.next(result);
+        this._isLoadingPokemonList$.next(false);
       });
   }
 
@@ -89,6 +97,7 @@ export class PokemonService {
   }
 
   public loadMorePokemons(): void {
+    this._isLoadingPokemonList$.next(true);
     //updating offset
     this.offset += SCROLL_ADDITIONAL_OFFSET;
 
@@ -100,8 +109,10 @@ export class PokemonService {
         takeUntilDestroyed(this.destroyRef),
         catchError((error: unknown) => {
           console.log('Erro ao atualizar lista de Pokémons:', error);
+          this._isLoadingPokemonList$.next(false);
           return throwError(() => error);
         }),
+
         map((request: RequestPokemon) => request.results)
       )
       .subscribe((result) => {
@@ -109,6 +120,7 @@ export class PokemonService {
           ...this._pokemonsList$.getValue(),
           ...result,
         ]);
+        this._isLoadingPokemonList$.next(false);
       });
   }
 

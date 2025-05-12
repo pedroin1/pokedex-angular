@@ -13,5 +13,10 @@
     [isSelected]="checkPokemonIsSelected(pokemon)"
     (selectPokemonEvent)="pokemonService.selectPokemon($event)"
   ></app-pokemon-card>
-  }
+  } @if (isLoadingList()) {
+  <img
+    class="pokemon-list__spinner"
+    src="assets/img/spinner.svg"
+    alt="spinner"
+  />}
 </ul>

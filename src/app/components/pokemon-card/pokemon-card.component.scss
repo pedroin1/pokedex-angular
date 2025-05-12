@@ -2,13 +2,19 @@
 @use "mix" as mix;
 @use "colors";
 
+:host {
+  display: block;
+  width: inherit;
+}
+
 .pokemon-card {
   &__container {
+    width: 100%;
     cursor: pointer;
-    padding: var.$spacing-xs;
     @include mix.flex-row(flex-start, center, var.$spacing-inline-xs);
 
     &-selected {
+      padding: var.$spacing-xs;
       border-radius: var.$border-lg;
       margin-left: var.$spacing-inline-xs;
       background-color: var(--red-01) !important;
@@ -21,7 +27,7 @@
   }
 
   &__info {
-    width: 400px;
+    flex-grow: 1;
     padding: 0 var.$spacing-xs;
     background-color: var(--yellow-03);
     border-radius: var.$border-half-pill;
@@ -34,5 +40,9 @@
     width: 25px;
     border-radius: var.$border-circle;
     background-color: rgba(0, 0, 0, 0.125);
+
+    &-selected {
+      background-color: var(--red-01) !important;
+    }
   }
 }

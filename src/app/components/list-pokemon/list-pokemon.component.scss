@@ -13,6 +13,12 @@
     width: 100%;
     height: 99%;
     padding: var.$spacing-inline-xs;
-    @include mix.flex-column(flex-start, flex-start, var.$spacing-inline-xs);
+    @include mix.flex-column(flex-start, flex-start, var.$spacing-inline-sm);
+  }
+
+  &__spinner {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
   }
 }

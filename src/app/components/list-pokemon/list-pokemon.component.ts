@@ -1,11 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import {
-  Component,
-  DestroyRef,
-  OnInit,
-  signal,
-  viewChild,
-} from '@angular/core';
+import { Component, DestroyRef, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PokemonCardComponent } from '@components/pokemon-card/pokemon-card.component';
 import { IPokemon } from '@models/pokemon';
@@ -20,7 +14,9 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 })
 export class ListPokemonComponent implements OnInit {
   protected selectedPokemon = signal<IPokemon | null>(null);
-  protected listElement = viewChild<HTMLUListElement>('list');
+
+  protected isLoadingList = signal(false);
+
   constructor(
     protected pokemonService: PokemonService,
     private destroyRef: DestroyRef
@@ -39,6 +35,12 @@ export class ListPokemonComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((pokemon) => {
         this.selectedPokemon.set(pokemon);
+      });
+
+    this.pokemonService.isLoadingPokemonList$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((isLoading) => {
+        this.isLoadingList.set(isLoading);
       });
   }
 }

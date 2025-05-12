@@ -1,4 +1,4 @@
-import { NgClass, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import {
   Component,
   input,
@@ -12,7 +12,7 @@ import { PokemonCodePipe } from 'src/app/pipes/pokemon-code.pipe';
 
 @Component({
   selector: 'app-pokemon-card',
-  imports: [NgClass, TitleCasePipe, PokemonCodePipe],
+  imports: [TitleCasePipe, PokemonCodePipe],
   templateUrl: './pokemon-card.component.html',
   styleUrl: './pokemon-card.component.scss',
 })
