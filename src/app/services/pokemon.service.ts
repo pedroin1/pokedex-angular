@@ -10,13 +10,14 @@ import {
   switchMap,
 } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { IPokemon } from '@models/pokemon';
 import { RequestPokemon } from '@models/request-pokemon';
 import {
   SCROLL_ADDITIONAL_OFFSET,
   SCROLL_INITIAL_OFFSET,
   SCROLL_LIMIT,
 } from '@constants/pokemon-scroll';
+import { pokemonListMapper } from '@mappers/pokemon-list-mapper';
+import { IPokemon } from '@models/pokemon';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +30,7 @@ export class PokemonService {
 
   private _pokemonId$ = new Subject<string | number>();
 
-  private _pokemon$ = new BehaviorSubject<IPokemon | null>(null);
+  private _pokemon$ = new Subject<IPokemon>();
 
   public pokemon$ = this._pokemon$.asObservable();
 
@@ -64,7 +65,7 @@ export class PokemonService {
           this._isLoadingPokemonList$.next(false);
           return throwError(() => error);
         }),
-        map((request: RequestPokemon) => request.results)
+        map(pokemonListMapper)
       )
       .subscribe((result) => {
         this._pokemonsList$.next(result);
@@ -113,7 +114,7 @@ export class PokemonService {
           return throwError(() => error);
         }),
 
-        map((request: RequestPokemon) => request.results)
+        map(pokemonListMapper)
       )
       .subscribe((result) => {
         this._pokemonsList$.next([

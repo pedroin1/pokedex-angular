@@ -1,3 +1,5 @@
 <div class="photo-card__container">
-  <img class="photo-card__image" src="assets/img/pokeball-azul.svg" alt="" />
+  @if (pokemon()) {
+  <img class="photo-card__image" [src]="pokemon()?.imageUrl" alt="" />
+  }
 </div>

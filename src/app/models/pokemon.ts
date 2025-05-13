@@ -1,4 +1,6 @@
 export interface IPokemon {
+  code: string;
   name: string;
-  url: string;
+  detailUrl: string;
+  imageUrl: string;
 }

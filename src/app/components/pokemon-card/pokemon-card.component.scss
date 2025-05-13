@@ -13,7 +13,7 @@
     cursor: pointer;
     @include mix.flex-row(flex-start, center, var.$spacing-inline-xs);
 
-    &-selected {
+    &--selected {
       padding: var.$spacing-xs;
       border-radius: var.$border-lg;
       margin-left: var.$spacing-inline-xs;
@@ -41,7 +41,7 @@
     border-radius: var.$border-circle;
     background-color: rgba(0, 0, 0, 0.125);
 
-    &-selected {
+    &--selected {
       background-color: var(--red-01) !important;
     }
   }

@@ -1,11 +1,5 @@
 import { TitleCasePipe } from '@angular/common';
-import {
-  Component,
-  input,
-  output,
-  OutputEmitterRef,
-  computed,
-} from '@angular/core';
+import { Component, input, output, OutputEmitterRef } from '@angular/core';
 import { IPokemon } from '@models/pokemon';
 import { PokemonService } from '@services/pokemon.service';
 import { PokemonCodePipe } from 'src/app/pipes/pokemon-code.pipe';
@@ -23,19 +17,10 @@ export class PokemonCardComponent {
 
   public selectPokemonEvent: OutputEmitterRef<IPokemon> = output();
 
-  protected pokemonNumber = computed(() => {
-    const match = this.pokemon().url.match(/\/pokemon\/(\d+)\//);
-    return match ? match[1] : '0';
-  });
-
-  protected pokemonImage = computed(() => {
-    return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/${this.pokemonNumber()}.png`;
-  });
-
   constructor(private pokemonService: PokemonService) {}
 
   protected onSelectPokemon(pokemon: IPokemon): void {
-    this.pokemonService.loadPokemonById(this.pokemonNumber());
+    this.pokemonService.loadPokemonById(pokemon.code);
     this.selectPokemonEvent.emit(pokemon);
   }
 }
