@@ -11,7 +11,7 @@
   <app-pokemon-card
     [pokemon]="pokemon"
     [isSelected]="checkPokemonIsSelected(pokemon)"
-    (selectPokemonEvent)="pokemonService.selectPokemon($event)"
+    (selectPokemonEvent)="onSelectPokemon($event)"
   ></app-pokemon-card>
   } @if (isLoadingList()) {
   <img

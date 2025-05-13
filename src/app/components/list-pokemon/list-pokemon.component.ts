@@ -26,6 +26,15 @@ export class ListPokemonComponent implements OnInit {
     return this.selectedPokemon() === pokemon;
   }
 
+  protected onSelectPokemon(pokemon: IPokemon | null): void {
+    this.selectedPokemon.set(pokemon);
+    if (pokemon) {
+      this.pokemonService.loadPokemonById(pokemon.code);
+    } else {
+      this.pokemonService.clearPokemon();
+    }
+  }
+
   protected onScroll(): void {
     this.pokemonService.loadMorePokemons();
   }

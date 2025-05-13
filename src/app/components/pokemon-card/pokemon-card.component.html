@@ -10,7 +10,7 @@
       [class]="{ 'pokemon-card__circle--selected': isSelected() }"
     ></div>
     <span>No. {{ pokemon().code | pokemonCode }}</span>
-    <img [src]="pokemon().imageUrl" width="50" height="40" alt="" />
+    <img [src]="pokemon()!.imageUrl" width="50" height="40" alt="" />
     <span> {{ pokemon().name | titlecase }}</span>
   </div>
 </div>

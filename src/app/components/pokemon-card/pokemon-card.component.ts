@@ -1,7 +1,6 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, input, output, OutputEmitterRef } from '@angular/core';
 import { IPokemon } from '@models/pokemon';
-import { PokemonService } from '@services/pokemon.service';
 import { PokemonCodePipe } from 'src/app/pipes/pokemon-code.pipe';
 
 @Component({
@@ -15,12 +14,13 @@ export class PokemonCardComponent {
 
   public isSelected = input.required<boolean>();
 
-  public selectPokemonEvent: OutputEmitterRef<IPokemon> = output();
-
-  constructor(private pokemonService: PokemonService) {}
+  public selectPokemonEvent: OutputEmitterRef<IPokemon | null> = output();
 
   protected onSelectPokemon(pokemon: IPokemon): void {
-    this.pokemonService.loadPokemonById(pokemon.code);
-    this.selectPokemonEvent.emit(pokemon);
+    if (this.isSelected()) {
+      this.selectPokemonEvent.emit(null);
+    } else {
+      this.selectPokemonEvent.emit(pokemon);
+    }
   }
 }

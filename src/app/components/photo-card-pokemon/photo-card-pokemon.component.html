@@ -1,5 +1,5 @@
 <div class="photo-card__container">
   @if (pokemon()) {
-  <img class="photo-card__image" [src]="pokemon()?.imageUrl" alt="" />
+  <img class="photo-card__image" [src]="pokemon()!.imageUrl" alt="" />
   }
 </div>

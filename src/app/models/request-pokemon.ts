@@ -1,8 +1,6 @@
-import { IPokemonDTO } from './pokemon-dto';
-
-export interface RequestPokemon {
+export interface RequestPokemonList<T> {
   count: number;
   next: string | null;
   previous: string | null;
-  results: IPokemonDTO[];
+  results: T;
 }

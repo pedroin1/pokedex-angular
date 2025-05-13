@@ -1,8 +1,10 @@
 import { IPokemon } from '@models/pokemon';
 import { IPokemonDTO } from '@models/pokemon-dto';
-import { RequestPokemon } from '@models/request-pokemon';
+import { RequestPokemonList } from '@models/request-pokemon';
 
-export const pokemonListMapper = (request: RequestPokemon): IPokemon[] => {
+export const pokemonListMapper = (
+  request: RequestPokemonList<IPokemonDTO[]>
+): IPokemon[] => {
   return request.results.map((pokemonDTO: IPokemonDTO): IPokemon => {
     const pokemonCode = convertPokemonCode(pokemonDTO);
 

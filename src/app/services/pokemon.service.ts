@@ -8,9 +8,10 @@ import {
   Subject,
   throwError,
   switchMap,
+  debounceTime,
 } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RequestPokemon } from '@models/request-pokemon';
+import { RequestPokemonList } from '@models/request-pokemon';
 import {
   SCROLL_ADDITIONAL_OFFSET,
   SCROLL_INITIAL_OFFSET,
@@ -18,6 +19,8 @@ import {
 } from '@constants/pokemon-scroll';
 import { pokemonListMapper } from '@mappers/pokemon-list-mapper';
 import { IPokemon } from '@models/pokemon';
+import { pokemonSingleMapper } from '@mappers/pokemon-single';
+import { IPokemonDTO } from '@models/pokemon-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -28,9 +31,9 @@ export class PokemonService {
 
   private readonly apiUrl = environment.API_URL;
 
-  private _pokemonId$ = new Subject<string | number>();
+  private _pokemonId$ = new Subject<string | number | null>();
 
-  private _pokemon$ = new Subject<IPokemon>();
+  private _pokemon$ = new Subject<IPokemon | null>();
 
   public pokemon$ = this._pokemon$.asObservable();
 
@@ -40,12 +43,12 @@ export class PokemonService {
 
   private _pokemonsList$ = new BehaviorSubject<IPokemon[]>([]);
 
+  public readonly pokemonsList$ = this._pokemonsList$.asObservable();
+
   private _isLoadingPokemonList$ = new Subject<boolean>();
 
   public readonly isLoadingPokemonList$ =
     this._isLoadingPokemonList$.asObservable();
-
-  public readonly pokemonsList$ = this._pokemonsList$.asObservable();
 
   constructor(private httpClient: HttpClient, private destroyRef: DestroyRef) {
     this.getAllPokemons();
@@ -55,7 +58,7 @@ export class PokemonService {
   private getAllPokemons(): void {
     this._isLoadingPokemonList$.next(true);
     this.httpClient
-      .get<RequestPokemon>(
+      .get<RequestPokemonList<IPokemonDTO[]>>(
         `${this.apiUrl}/pokemon?limit=${SCROLL_LIMIT}&offset=${SCROLL_INITIAL_OFFSET}`
       )
       .pipe(
@@ -84,7 +87,8 @@ export class PokemonService {
               catchError((error) => {
                 console.log('Erro ao buscar Pokémon:', error);
                 return throwError(() => error);
-              })
+              }),
+              map(pokemonSingleMapper)
             )
         )
       )
@@ -97,17 +101,22 @@ export class PokemonService {
     this._pokemonId$.next(id);
   }
 
+  public clearPokemon(): void {
+    this._pokemon$.next(null);
+  }
+
   public loadMorePokemons(): void {
     this._isLoadingPokemonList$.next(true);
     //updating offset
     this.offset += SCROLL_ADDITIONAL_OFFSET;
 
     this.httpClient
-      .get<RequestPokemon>(
+      .get<RequestPokemonList<IPokemonDTO[]>>(
         `${this.apiUrl}/pokemon?limit=${SCROLL_LIMIT}&offset=${this.offset}`
       )
       .pipe(
         takeUntilDestroyed(this.destroyRef),
+        debounceTime(1000),
         catchError((error: unknown) => {
           console.log('Erro ao atualizar lista de Pokémons:', error);
           this._isLoadingPokemonList$.next(false);
