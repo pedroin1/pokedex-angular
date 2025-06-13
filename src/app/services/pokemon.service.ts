@@ -11,7 +11,10 @@ import {
   debounceTime,
 } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RequestPokemonList } from '@models/request-pokemon';
+import {
+  RequestPokemonDetail,
+  RequestPokemonList,
+} from '@models/request-pokemon';
 import {
   SCROLL_ADDITIONAL_OFFSET,
   SCROLL_INITIAL_OFFSET,
@@ -19,8 +22,9 @@ import {
 } from '@constants/pokemon-scroll';
 import { pokemonListMapper } from '@mappers/pokemon-list-mapper';
 import { IPokemon } from '@models/pokemon';
-import { pokemonSingleMapper } from '@mappers/pokemon-single';
-import { IPokemonDTO } from '@models/pokemon-dto';
+import { pokemonDetailMapper } from '@mappers/pokemon-detail-mapper';
+import { IPokemonDTO } from '@models/pokemon.dto';
+import { IPokemonDetail } from '@models/pokemon-detail';
 
 @Injectable({
   providedIn: 'root',
@@ -31,9 +35,9 @@ export class PokemonService {
 
   private readonly apiUrl = environment.API_URL;
 
-  private _pokemonId$ = new Subject<string | number | null>();
+  private _pokemonId$ = new Subject<string | null>();
 
-  private _pokemon$ = new Subject<IPokemon | null>();
+  private _pokemon$ = new Subject<IPokemonDetail | null>();
 
   public pokemon$ = this._pokemon$.asObservable();
 
@@ -52,7 +56,7 @@ export class PokemonService {
 
   constructor(private httpClient: HttpClient, private destroyRef: DestroyRef) {
     this.getAllPokemons();
-    this.getPokemonById();
+    this.getPokemonDetailById();
   }
 
   private getAllPokemons(): void {
@@ -70,35 +74,35 @@ export class PokemonService {
         }),
         map(pokemonListMapper)
       )
-      .subscribe((result) => {
+      .subscribe((result: IPokemon[]) => {
         this._pokemonsList$.next(result);
         this._isLoadingPokemonList$.next(false);
       });
   }
 
-  private getPokemonById(): void {
+  private getPokemonDetailById(): void {
     this._pokemonId$
       .pipe(
         takeUntilDestroyed(this.destroyRef),
         switchMap((pokemonId) =>
           this.httpClient
-            .get<IPokemon>(`${this.apiUrl}/pokemon/${pokemonId}`)
+            .get<RequestPokemonDetail>(`${this.apiUrl}/pokemon/${pokemonId}`)
             .pipe(
               catchError((error) => {
-                console.log('Erro ao buscar Pokémon:', error);
+                console.log('Erro ao buscar detalhes do Pokémon:', error);
                 return throwError(() => error);
               }),
-              map(pokemonSingleMapper)
+              map(pokemonDetailMapper)
             )
         )
       )
-      .subscribe((pokemon) => {
+      .subscribe((pokemon: IPokemonDetail) => {
         this._pokemon$.next(pokemon);
       });
   }
 
-  public loadPokemonById(id: string | number): void {
-    this._pokemonId$.next(id);
+  public loadPokemonById(pokemonId: string): void {
+    this._pokemonId$.next(pokemonId);
   }
 
   public clearPokemon(): void {

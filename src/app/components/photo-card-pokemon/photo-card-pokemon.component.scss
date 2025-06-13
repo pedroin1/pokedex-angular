@@ -4,10 +4,10 @@
 
 .photo-card {
   &__container {
-    width: 600px;
-    height: 600px;
-    border: var.$border-lg solid var(--yellow-02);
-    outline: var.$border-xl solid var(--blue-04);
+    width: 480px;
+    height: 480px;
+    border: var.$border-lg solid var(--blue-04);
+    outline: var.$border-xl solid var(--yellow-02);
     border-radius: var.$border-half-pill;
     background: linear-gradient(var(--white-02) 50%, var(--blue-05) 50%);
     background-size: 20px 20px;

@@ -1,5 +1,5 @@
 import { IPokemon } from '@models/pokemon';
-import { IPokemonDTO } from '@models/pokemon-dto';
+import { IPokemonDTO } from '@models/pokemon.dto';
 import { RequestPokemonList } from '@models/request-pokemon';
 
 export const pokemonListMapper = (
@@ -11,7 +11,6 @@ export const pokemonListMapper = (
     return {
       code: pokemonCode,
       name: pokemonDTO.name,
-      detailUrl: pokemonDTO.url,
       imageUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonCode}.png`,
     };
   });

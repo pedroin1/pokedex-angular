@@ -28,6 +28,7 @@ export class ListPokemonComponent implements OnInit {
 
   protected onSelectPokemon(pokemon: IPokemon | null): void {
     this.selectedPokemon.set(pokemon);
+
     if (pokemon) {
       this.pokemonService.loadPokemonById(pokemon.code);
     } else {

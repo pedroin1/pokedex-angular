@@ -1,6 +1,9 @@
 <app-header></app-header>
 <main class="main-container">
-  <app-photo-card-pokemon></app-photo-card-pokemon>
+  @if ( pokemonService.pokemon$ | async; as pokemon ) {
+  <app-pokemon-detail [pokemon]="pokemon"></app-pokemon-detail>
+  }
+  <!-- <app-photo-card-pokemon></app-photo-card-pokemon> -->
   <app-list-pokemon></app-list-pokemon>
 </main>
 <app-footer></app-footer>

@@ -13,12 +13,19 @@
   @include mix.grid(1.2fr 1fr, auto, 12px);
 
   :first-child {
-    justify-self: flex-end;
+    justify-self: center;
     align-self: center;
   }
 
   :last-child {
     justify-self: flex-start;
     align-self: center;
+  }
+
+  app-pokemon-detail {
+    z-index: 1;
+  }
+  app-photo-card-pokemon {
+    z-index: 2;
   }
 }
